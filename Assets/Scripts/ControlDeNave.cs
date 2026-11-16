@@ -111,7 +111,7 @@ public class ControlDeNave : MonoBehaviour
         if (propulsando)
         {
             rigidBody.AddForce(
-                transform.up * aceleracion,
+                transform.right * aceleracion,
                 ForceMode.Acceleration
             );
         }
