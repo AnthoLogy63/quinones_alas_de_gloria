@@ -1,29 +1,56 @@
-
 using UnityEngine;
 
+/// <summary>
+/// Controles sencillos de vuelo: D acelera hacia la derecha, Space da
+/// sustentacion para despegar y A frena el movimiento horizontal.
+/// </summary>
 public class ControlDeNave : MonoBehaviour
 {
     private Rigidbody rigidBody;
     private AudioSource audioSource;
-    private bool propulsando;
 
-    public float aceleracion = 13f;
+    [Header("Vuelo")]
+    public float aceleracionHorizontal = 13f;
+    public float aceleracionVertical = 18f;
+    public float sustentacionMaxima = 12f;
     public float velocidadMaxima = 25f;
-    public float velocidadRotacion = 25f;
+    public float frenadoHorizontal = 18f;
+
+    private bool motorActivo;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
 
-        ConfigurarFisicas();
-        ValidarComponentes();
+        if (rigidBody == null)
+        {
+            Debug.LogError("El avion necesita un Rigidbody.");
+            enabled = false;
+            return;
+        }
+
+        rigidBody.useGravity = true;
+        rigidBody.drag = 0f;
+        rigidBody.angularDrag = 0f;
+        rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
+        rigidBody.constraints = RigidbodyConstraints.FreezePositionZ |
+                                RigidbodyConstraints.FreezeRotationX |
+                                RigidbodyConstraints.FreezeRotationY |
+                                RigidbodyConstraints.FreezeRotationZ;
     }
 
     void Update()
     {
-        propulsando = Input.GetKey(KeyCode.Space);
-        ControlarAudio();
+        motorActivo = Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.A);
+
+        if (audioSource == null)
+            return;
+
+        if (motorActivo && !audioSource.isPlaying)
+            audioSource.Play();
+        else if (!motorActivo && audioSource.isPlaying)
+            audioSource.Stop();
     }
 
     void FixedUpdate()
@@ -31,111 +58,55 @@ public class ControlDeNave : MonoBehaviour
         if (rigidBody == null)
             return;
 
-        ControlarRotacionDurantePropulsion();
-        ControlarRotacion();
-        ControlarPropulsion();
+        ControlarMovimientoHorizontal();
+        ControlarDespegue();
+        AplicarSustentacion();
+        ControlarFrenado();
         LimitarVelocidad();
     }
 
-    void ConfigurarFisicas()
+    void ControlarMovimientoHorizontal()
     {
-        if (rigidBody == null)
+        if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+            rigidBody.AddForce(Vector3.right * aceleracionHorizontal, ForceMode.Acceleration);
+    }
+
+    void ControlarDespegue()
+    {
+        if (Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.A))
+            rigidBody.AddForce(Vector3.up * aceleracionVertical, ForceMode.Acceleration);
+    }
+
+    void AplicarSustentacion()
+    {
+        // La velocidad hacia delante genera sustentacion, incluso al soltar Space.
+        float velocidadHorizontal = Mathf.Max(0f, rigidBody.velocity.x);
+        float proporcionVelocidad = Mathf.Clamp01(velocidadHorizontal / velocidadMaxima);
+        float sustentacion = proporcionVelocidad * sustentacionMaxima;
+        rigidBody.AddForce(Vector3.up * sustentacion, ForceMode.Acceleration);
+    }
+
+    void ControlarFrenado()
+    {
+        if (!Input.GetKey(KeyCode.A))
             return;
 
-        rigidBody.useGravity = true;
-        rigidBody.drag = 0f;
-        rigidBody.angularDrag = 0f;
-        rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
-
-        rigidBody.constraints =
-            RigidbodyConstraints.FreezePositionZ |
-            RigidbodyConstraints.FreezeRotationX |
-            RigidbodyConstraints.FreezeRotationY;
-    }
-
-    void ValidarComponentes()
-    {
-        if (rigidBody == null)
-            Debug.LogError("La nave necesita un Rigidbody.");
-
-        if (audioSource == null)
-            Debug.LogError("La nave necesita un Audio Source con el sonido del propulsor.");
-    }
-
-    void ControlarAudio()
-    {
-        if (audioSource == null)
-            return;
-
-        if (propulsando && !audioSource.isPlaying)
-            audioSource.Play();
-        else if (!propulsando && audioSource.isPlaying)
-            audioSource.Stop();
-    }
-
-    void ControlarRotacionDurantePropulsion()
-    {
-        // Se congela la rotación mientras se mantiene Space.
-        if (propulsando)
-        {
-            rigidBody.constraints |= RigidbodyConstraints.FreezeRotationZ;
-        }
-        else
-        {
-            // Se permite girar nuevamente al soltar Space.
-            rigidBody.constraints &= ~RigidbodyConstraints.FreezeRotationZ;
-        }
-    }
-
-    void ControlarRotacion()
-    {
-        if (propulsando)
-            return;
-
-        float direccionGiro = 0f;
-
-        if (Input.GetKey(KeyCode.D))
-            direccionGiro = -1f;
-        else if (Input.GetKey(KeyCode.A))
-            direccionGiro = 1f;
-
-        float giro = direccionGiro * velocidadRotacion * Time.fixedDeltaTime;
-
-        rigidBody.MoveRotation(
-            rigidBody.rotation * Quaternion.Euler(0f, 0f, giro)
-        );
-    }
-
-    void ControlarPropulsion()
-    {
-        if (propulsando)
-        {
-            rigidBody.AddForce(
-                transform.right * aceleracion,
-                ForceMode.Acceleration
-            );
-        }
+        // A solo frena el avance: conserva la velocidad vertical del avion.
+        Vector3 velocidad = rigidBody.velocity;
+        velocidad.x = Mathf.MoveTowards(velocidad.x, 0f, frenadoHorizontal * Time.fixedDeltaTime);
+        rigidBody.velocity = velocidad;
     }
 
     void LimitarVelocidad()
     {
-        Vector2 velocidadXY = new Vector2(
-            rigidBody.velocity.x,
-            rigidBody.velocity.y
-        );
-
+        Vector2 velocidadXY = new Vector2(rigidBody.velocity.x, rigidBody.velocity.y);
         if (velocidadXY.magnitude <= velocidadMaxima)
             return;
 
         velocidadXY = velocidadXY.normalized * velocidadMaxima;
-
-        rigidBody.velocity = new Vector3(
-            velocidadXY.x,
-            velocidadXY.y,
-            rigidBody.velocity.z
-        );
+        rigidBody.velocity = new Vector3(velocidadXY.x, velocidadXY.y, rigidBody.velocity.z);
     }
-    
+
     void OnCollisionEnter(Collision collision)
     {
         switch (collision.gameObject.tag)
@@ -143,11 +114,9 @@ public class ControlDeNave : MonoBehaviour
             case "colisión segura":
                 Debug.Log("Colisión segura");
                 break;
-
             case "condición peligrosa":
                 Debug.Log("Colisión peligrosa");
                 break;
-
             default:
                 Debug.Log("Colisión con objeto sin clasificar");
                 break;
