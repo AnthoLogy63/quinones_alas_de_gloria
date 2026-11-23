@@ -70,7 +70,7 @@ public class SeguirAvion : MonoBehaviour
         float tiempoSuavizado = suavizado > 0.01f ? suavizado : 0.18f;
 
         float velocidad = rigidBodyObjetivo != null
-            ? Mathf.Max(0f, rigidBodyObjetivo.velocity.x)
+            ? Mathf.Max(0f, rigidBodyObjetivo.linearVelocity.x)
             : 0f;
         float progresoZoom = Mathf.Clamp01(velocidad / velocidadZoom);
         float distancia = Mathf.Lerp(distanciaCerca, distanciaLejos, progresoZoom);
