@@ -11,10 +11,10 @@ using UnityEngine;
 /// </summary>
 public static class CrearEscenaDePruebas
 {
-    const string EscenaOrigen = "Assets/Scenes/PruebasMecanicas.unity";
-    const string EscenaDestino = "Assets/Scenes/PruebasAvion.unity";
-    const string RutaReglas = "Assets/Data/ReglasDeJuego.asset";
-    const string RutaProyectil = "Assets/Prefabs/Obstaculos/Proyectil.prefab";
+    const string EscenaOrigen = "Assets/02_Niveles/Nivel_00_Pruebas/PruebasMecanicas.unity";
+    const string EscenaDestino = "Assets/02_Niveles/Nivel_00_Pruebas/PruebasAvion.unity";
+    const string RutaReglas = "Assets/03_Compartidos/Core/Data/ReglasDeJuego.asset";
+    const string RutaProyectil = "Assets/03_Compartidos/Enemigos/Prefabs/Proyectil.prefab";
     const string RaizNombre = "--- PRUEBAS (generado) ---";
     const float Z = 0.5f; // plano de juego (la nave tiene Z congelado)
 
@@ -70,7 +70,7 @@ public static class CrearEscenaDePruebas
             audio = avion.AddComponent<AudioSource>();
         audio.playOnAwake = false;
         audio.loop = true;
-        audio.clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/sonido/propulsor.mp3");
+        audio.clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/03_Compartidos/Jugador/Audio/propulsor.mp3");
 
         Disparador disparador = avion.GetComponent<Disparador>();
         if (disparador == null)
@@ -236,11 +236,11 @@ public static class CrearEscenaDePruebas
 
     static Material CrearMaterial(string nombre, Color color)
     {
-        string ruta = "Assets/Materials/Pruebas/" + nombre + ".mat";
+        string ruta = "Assets/02_Niveles/Nivel_00_Pruebas/Greybox/Materials/" + nombre + ".mat";
         Material m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
         if (m == null)
         {
-            AsegurarCarpeta("Assets/Materials/Pruebas");
+            AsegurarCarpeta("Assets/02_Niveles/Nivel_00_Pruebas/Greybox/Materials");
             m = new Material(Shader.Find("Universal Render Pipeline/Lit"));
             AssetDatabase.CreateAsset(m, ruta);
         }
