@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuHoverUI
   hoverVisual: {fileID: 549971190}
+  audioMenu: {fileID: 900000102}
 --- !u!114 &59691836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,6 +778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuHoverUI
   hoverVisual: {fileID: 417492268}
+  audioMenu: {fileID: 900000102}
 --- !u!114 &513871761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,6 +903,7 @@ GameObject:
   - component: {fileID: 582004325}
   - component: {fileID: 582004324}
   - component: {fileID: 582004326}
+  - component: {fileID: 900000103}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1144,6 +1147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuHoverUI
   hoverVisual: {fileID: 1363717379}
+  audioMenu: {fileID: 900000102}
 --- !u!114 &606778791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1332,6 +1336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuHoverUI
   hoverVisual: {fileID: 594362289}
+  audioMenu: {fileID: 900000102}
 --- !u!114 &767673702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1744,6 +1749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MenuHoverUI
   hoverVisual: {fileID: 1005040722}
+  audioMenu: {fileID: 900000102}
 --- !u!114 &1251065652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2578,6 +2584,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056733802}
   m_CullTransparentMesh: 1
+--- !u!1 &900000100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900000101}
+  - component: {fileID: 900000102}
+  m_Layer: 0
+  m_Name: AudioMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &900000101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000100}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &900000102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d1900dfb5b53ca944c08e4fe5cf302, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AudioDeMenu
+  musica: {fileID: 8300000, guid: 5a7579fefe47550ab4ce399feb4be75e, type: 3}
+  hover: {fileID: 8300000, guid: b461b330d3b65724a5838274354104dc, type: 3}
+  click: {fileID: 8300000, guid: 0a1e0a4c3ae0585490984d5190d3d405, type: 3}
+  confirmar: {fileID: 8300000, guid: 1ab0e9e50e9e53478574b64cb3883ed0, type: 3}
+  volver: {fileID: 8300000, guid: a53c085a90e752f48cdc9adc297fa520, type: 3}
+  iniciar: {fileID: 8300000, guid: ffe1c588557c5a2a878bd62228a12c5d, type: 3}
+  abrirPausa: {fileID: 8300000, guid: c986181500475620ae0617330619a082, type: 3}
+  cerrarPausa: {fileID: 8300000, guid: ab5674ec04b158aaae4f7ae8d9771630, type: 3}
+  volumenMusica: 0.2
+  volumenEfectos: 0.6
+--- !u!81 &900000103
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 582004323}
+  m_Enabled: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2585,3 +2653,4 @@ SceneRoots:
   - {fileID: 1752038848}
   - {fileID: 582004325}
   - {fileID: 1426814250}
+  - {fileID: 900000101}

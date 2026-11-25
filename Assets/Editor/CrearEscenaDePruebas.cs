@@ -44,6 +44,7 @@ public static class CrearEscenaDePruebas
         gestor.reglas = reglas;
         gestor.nave = nave;
         gestor.gameObject.AddComponent<HudDePruebas>();
+        ConfigurarAudio(gestor.gameObject);
 
         CrearEscenario(raiz.transform, proyectil);
 
@@ -54,6 +55,24 @@ public static class CrearEscenaDePruebas
     }
 
     // ---------------------------------------------------------------- nave
+
+    static AudioClip Clip(string ruta) => AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/" + ruta);
+
+    static void ConfigurarAudio(GameObject objeto)
+    {
+        AudioDeNivel audio = objeto.AddComponent<AudioDeNivel>();
+        audio.musica = Clip("03_Compartidos/Audio/Musica/MUS_Combate.ogg");
+        audio.ambiente = Clip("02_Niveles/Nivel_01/Audio/Ambiente/AMB_Viento_Loop.wav");
+        audio.disparoJugador = Clip("03_Compartidos/Jugador/Audio/SFX_Avion_Disparo.wav");
+        audio.disparoEnemigo = Clip("03_Compartidos/Enemigos/Audio/SFX_Enemigo_Disparo.wav");
+        audio.disparoTorreta = Clip("03_Compartidos/Enemigos/Audio/SFX_Torreta_Disparo.wav");
+        audio.impacto = Clip("03_Compartidos/Jugador/Audio/SFX_Avion_Impacto.wav");
+        audio.recogerCombustible = Clip("03_Compartidos/Audio/SFX/SFX_Combustible_Recoger.wav");
+        audio.enemigoDestruido = Clip("03_Compartidos/Enemigos/Audio/SFX_Enemigo_Explosion.wav");
+        audio.combustibleBajo = Clip("03_Compartidos/Jugador/Audio/SFX_Avion_CombustibleBajo.wav");
+        audio.victoria = Clip("01_Interfaces/NivelCompletado/Audio/SFX_Nivel_Victoria.wav");
+        audio.derrota = Clip("01_Interfaces/NivelFallido/Audio/SFX_Nivel_Derrota.wav");
+    }
 
     static NaveJugador ConfigurarNave(Proyectil proyectil)
     {
@@ -70,7 +89,8 @@ public static class CrearEscenaDePruebas
             audio = avion.AddComponent<AudioSource>();
         audio.playOnAwake = false;
         audio.loop = true;
-        audio.clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/03_Compartidos/Jugador/Audio/propulsor.mp3");
+        audio.volume = 0.35f;
+        audio.clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/03_Compartidos/Jugador/Audio/SFX_Avion_Motor_Loop.wav");
 
         Disparador disparador = avion.GetComponent<Disparador>();
         if (disparador == null)

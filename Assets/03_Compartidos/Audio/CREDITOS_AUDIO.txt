@@ -1,0 +1,58 @@
+ALAS DE GLORIA — CRÉDITOS DE AUDIO
+Selección incorporada el 25 de noviembre de 2026.
+
+INCLUIR ESTOS CRÉDITOS EN LA PANTALLA O DOCUMENTACIÓN DISTRIBUIDA CON EL JUEGO:
+
+Motor del avión: "Airplane Prop Loop", sonido original por jakobthiesen,
+adaptado a bucle por AntumDeluge.
+https://opengameart.org/content/airplane-prop-loop
+Licencia Creative Commons Attribution 3.0:
+https://creativecommons.org/licenses/by/3.0/
+Cambios del proyecto: conversión a mono WAV, normalización, ajuste de unión
+del bucle y variantes con cambio de tono y envolventes de volumen.
+
+Música de introducción: "Orchestral Adventure" por CodeManu.
+https://opengameart.org/content/orchestral-adventure
+Licencia Creative Commons Attribution 3.0:
+https://creativecommons.org/licenses/by/3.0/
+Cambios: conversión a OGG Vorbis y limitación de picos.
+
+Disparos del jugador, enemigo y torreta: "Light Machine Gun" por KuraiWolf.
+https://opengameart.org/content/light-machine-gun
+Licencia Creative Commons Attribution 4.0:
+https://creativecommons.org/licenses/by/4.0/
+Cambios: conversión a WAV mono y normalización; variaciones de tono para
+enemigos y torreta. El sonido de torreta es una adaptación provisional.
+
+OTROS AUTORES (CC0, ATRIBUCIÓN VOLUNTARIA):
+
+Kenney — Interface Sounds, Impact Sounds, Music Jingles.
+https://kenney.nl/assets/interface-sounds
+https://kenney.nl/assets/impact-sounds
+https://kenney.nl/assets/music-jingles
+Los textos originales de licencia están en la carpeta Licencias.
+
+Brandon Morris / HaelDB — "Orchestra Loop" (música del menú; se eligió CC0).
+https://opengameart.org/content/orchestra-loop
+
+Akikazer — "Menu Loop" (música provisional del tutorial).
+https://opengameart.org/content/menu-loop
+
+SpiderDave — "A New Day" (música de créditos).
+https://opengameart.org/content/a-new-day
+
+Emma_MA — "Determined Pursuit (epic orchestra loop)" (combate).
+https://opengameart.org/content/determined-pursuit-epic-orchestra-loop
+
+Luke.RUSTLTD — "wind1" (viento, ráfaga e impulso adaptado).
+https://opengameart.org/content/wind1
+
+EZduzziteh — "Explosions".
+https://opengameart.org/content/explosions-4
+
+CC0 1.0: https://creativecommons.org/publicdomain/zero/1.0/
+
+El archivo CatalogoAudio.json identifica fuente, licencia, adaptación,
+duración y huella SHA-256 de cada uno de los 35 archivos añadidos.
+propulsor.mp3 ya existía antes de esta selección; no se le atribuye una
+licencia ni un autor nuevos y se conserva como respaldo.

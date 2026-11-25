@@ -1324,9 +1324,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 9f8f0c7384f9cc24daf9a619450b630a, type: 3}
+  m_Resource: {fileID: 8300000, guid: babea365878a5efabb14b89ec8dd8b88, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2683,6 +2683,65 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 633099311}
   m_SourcePrefab: {fileID: 100100000, guid: 019e137d7fd8786468b002773cca28ba, type: 3}
+--- !u!1 &900000100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 900000101}
+  - component: {fileID: 900000102}
+  m_Layer: 0
+  m_Name: AudioNivel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &900000101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000100}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &900000102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a7d6333eadc526eaf6b6c3140566c40, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::AudioDeNivel
+  musica: {fileID: 8300000, guid: c836d38725e658d999a7f2cc028168d5, type: 3}
+  ambiente: {fileID: 8300000, guid: 9fdaa2dbc9e350de98a79b47910b29ef, type: 3}
+  disparoJugador: {fileID: 8300000, guid: 3b67fa5a0b12507a8ed102b6ffb453d3, type: 3}
+  disparoEnemigo: {fileID: 8300000, guid: d3efe471bbf65802ace0a9a5b0ebd670, type: 3}
+  disparoTorreta: {fileID: 8300000, guid: 62dc378bf67a5c2892152babbebd705d, type: 3}
+  impacto: {fileID: 8300000, guid: 0c06dd52c3c5503fbbc06d755320b6d4, type: 3}
+  recogerCombustible: {fileID: 8300000, guid: ea9c25d86d145ce19a46c315c3ef8168, type: 3}
+  enemigoDestruido: {fileID: 8300000, guid: 3b56f856e21d5116a2a9e48610ed8be4, type: 3}
+  combustibleBajo: {fileID: 8300000, guid: b32e491135be55629b320c86ccff7a69, type: 3}
+  victoria: {fileID: 8300000, guid: f2ef8cb9f9235a418e52c895766e75ef, type: 3}
+  derrota: {fileID: 8300000, guid: 4e1d0f690f9254928a088fa563a6981e, type: 3}
+  volumenMusica: 0.18
+  volumenAmbiente: 0.08
+  volumenEfectos: 0.55
+  umbralCombustibleBajo: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2692,3 +2751,4 @@ SceneRoots:
   - {fileID: 1632640478}
   - {fileID: 1073252266}
   - {fileID: 1612717906}
+  - {fileID: 900000101}
