@@ -273,10 +273,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objetivo: {fileID: 1073252266}
-  distanciaInicial: 16
-  distanciaMaxima: 26
-  alturaInicial: 2.5
-  alturaMaxima: 4
+  distanciaInicial: 24
+  distanciaMaxima: 38
+  alturaInicial: 0
+  alturaMaxima: 0
   velocidadParaZoomMaximo: 25
   suavizado: 0.25
 --- !u!1 &633099306 stripped

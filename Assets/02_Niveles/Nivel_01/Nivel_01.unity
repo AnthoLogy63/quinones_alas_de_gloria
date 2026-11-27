@@ -226,10 +226,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeguirAvion
   objetivo: {fileID: 1823122806}
-  distanciaInicial: 16
-  distanciaMaxima: 26
-  alturaInicial: 2.5
-  alturaMaxima: 4
+  distanciaInicial: 24
+  distanciaMaxima: 38
+  alturaInicial: 0
+  alturaMaxima: 0
   velocidadParaZoomMaximo: 25
   suavizado: 0.18
 --- !u!114 &29108489

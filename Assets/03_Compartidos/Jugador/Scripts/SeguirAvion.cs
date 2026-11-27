@@ -11,10 +11,10 @@ public class SeguirAvion : MonoBehaviour
     public Transform objetivo;
 
     [Header("Seguimiento y zoom por altura")]
-    public float distanciaInicial = 16f;
-    public float distanciaMaxima = 26f;
-    public float alturaInicial = 2.5f;
-    public float alturaMaxima = 4f;
+    public float distanciaInicial = 24f;
+    public float distanciaMaxima = 38f;
+    public float alturaInicial = 0f;
+    public float alturaMaxima = 0f;
     [Tooltip("Altura sobre el suelo (m) a la que la cámara llega a su distancia máxima.")]
     public float alturaParaZoomMaximo = 40f;
     public float suavizado = 0.18f;
@@ -36,8 +36,8 @@ public class SeguirAvion : MonoBehaviour
             return;
 
         alturaReferencia = objetivo.position.y;
-        float distanciaInicio = distanciaInicial > 0.1f ? distanciaInicial : 16f;
-        float alturaInicio = alturaInicial > 0.1f ? alturaInicial : 2.5f;
+        float distanciaInicio = distanciaInicial > 0.1f ? distanciaInicial : 24f;
+        float alturaInicio = alturaInicial;
 
         // Arranca ya cerca del avion, sin esperar a que la camara alcance su offset.
         transform.position = objetivo.position + new Vector3(0f, alturaInicio, -distanciaInicio);
@@ -53,10 +53,10 @@ public class SeguirAvion : MonoBehaviour
             return;
 
         // Evita valores cero (posible al añadir estos campos a una escena antigua).
-        float distanciaCerca = distanciaInicial > 0.1f ? distanciaInicial : 16f;
-        float distanciaLejos = distanciaMaxima > distanciaCerca ? distanciaMaxima : distanciaCerca + 10f;
-        float alturaCerca = alturaInicial > 0.1f ? alturaInicial : 2.5f;
-        float alturaLejos = alturaMaxima > alturaCerca ? alturaMaxima : alturaCerca + 1.5f;
+        float distanciaCerca = distanciaInicial > 0.1f ? distanciaInicial : 24f;
+        float distanciaLejos = distanciaMaxima > distanciaCerca ? distanciaMaxima : distanciaCerca + 14f;
+        float alturaCerca = alturaInicial;
+        float alturaLejos = Mathf.Max(alturaMaxima, alturaCerca);
         float alturaZoom = alturaParaZoomMaximo > 1f ? alturaParaZoomMaximo : 40f;
         float tiempoSuavizado = suavizado > 0.01f ? suavizado : 0.18f;
         float tiempoZoom = suavizadoZoom > 0.01f ? suavizadoZoom : 0.8f;
