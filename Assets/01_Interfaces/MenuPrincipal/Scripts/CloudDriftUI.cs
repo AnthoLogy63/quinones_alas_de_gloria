@@ -20,12 +20,18 @@ public sealed class CloudDriftUI : MonoBehaviour
         Vector2 position = rectTransform.anchoredPosition;
         position.x += speedPixelsPerSecond * Time.unscaledDeltaTime;
 
-        float halfCloudWidth = rectTransform.rect.width * 0.5f;
+        // RectTransform.rect is unscaled. Use the cloud's actual size in canvas
+        // units so scaled sprites leave and re-enter at the correct edges.
+        float scaleX = Mathf.Abs(rectTransform.localScale.x);
+        for (Transform parent = rectTransform.parent; parent != null && parent.GetComponent<Canvas>() == null; parent = parent.parent)
+            scaleX *= Mathf.Abs(parent.localScale.x);
+        float cloudWidth = rectTransform.rect.width * scaleX;
+        float halfCloudWidth = cloudWidth * 0.5f;
         float rightExitCenter = viewportWidth * 0.5f + halfCloudWidth;
         if (position.x >= rightExitCenter)
         {
             float leftSpawnCenter = -rightExitCenter;
-            float loopDistance = viewportWidth + rectTransform.rect.width;
+            float loopDistance = viewportWidth + cloudWidth;
             position.x = leftSpawnCenter + Mathf.Repeat(position.x - rightExitCenter, loopDistance);
         }
 

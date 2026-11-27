@@ -8,5 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01_Interfaces/MenuPrincipal/MenuPrincipal.unity
     guid: cee007443dab9d448a22c01480e718b8
+  - enabled: 1
+    path: Assets/02_Niveles/Nivel_00_Pruebas/PruebasAvion.unity
+    guid: b6d68901c1dc6e64fb7402e49f905adf
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
