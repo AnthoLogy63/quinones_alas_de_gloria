@@ -1,35 +1,41 @@
 using UnityEngine;
 
+/// <summary>
+/// Cámara lateral que sigue al avión. El zoom depende de la altura sobre el suelo:
+/// cerca del suelo se acerca para ver bien el despegue y el aterrizaje, y se aleja
+/// (sin pasarse) a medida que el avión gana altura.
+/// </summary>
 [DefaultExecutionOrder(10000)]
 public class SeguirAvion : MonoBehaviour
 {
     public Transform objetivo;
 
-    [Header("Seguimiento y zoom por velocidad")]
+    [Header("Seguimiento y zoom por altura")]
     public float distanciaInicial = 16f;
     public float distanciaMaxima = 26f;
     public float alturaInicial = 2.5f;
     public float alturaMaxima = 4f;
-    public float velocidadParaZoomMaximo = 25f;
+    [Tooltip("Altura sobre el suelo (m) a la que la cámara llega a su distancia máxima.")]
+    public float alturaParaZoomMaximo = 40f;
     public float suavizado = 0.18f;
+    [Tooltip("Suavizado del zoom (s). Más alto = el zoom reacciona más despacio.")]
+    public float suavizadoZoom = 0.8f;
 
-    private Rigidbody rigidBodyObjetivo;
+    private const float AlcanceDelSuelo = 300f;
+
     private float velocidadSuavizadoY;
     private float velocidadSuavizadoZ;
+    private float velocidadSuavizadoZoom;
+    private float progresoZoom;
+    private float alturaReferencia;
 
     void Start()
     {
-        if (objetivo == null)
-        {
-            GameObject avion = GameObject.Find("AvionRoot");
-            if (avion != null)
-                objetivo = avion.transform;
-        }
-
+        BuscarObjetivo();
         if (objetivo == null)
             return;
 
-        rigidBodyObjetivo = objetivo.GetComponent<Rigidbody>();
+        alturaReferencia = objetivo.position.y;
         float distanciaInicio = distanciaInicial > 0.1f ? distanciaInicial : 16f;
         float alturaInicio = alturaInicial > 0.1f ? alturaInicial : 2.5f;
 
@@ -42,37 +48,22 @@ public class SeguirAvion : MonoBehaviour
     {
         // Reintenta encontrarlo por si el objetivo no quedó serializado en la escena.
         if (objetivo == null)
-        {
-            GameObject avion = GameObject.Find("AvionRoot");
-            if (avion != null)
-            {
-                objetivo = avion.transform;
-                rigidBodyObjetivo = objetivo.GetComponent<Rigidbody>();
-            }
-        }
-
+            BuscarObjetivo();
         if (objetivo == null)
             return;
 
-        if (rigidBodyObjetivo == null)
-            rigidBodyObjetivo = objetivo.GetComponent<Rigidbody>();
-
         // Evita valores cero (posible al añadir estos campos a una escena antigua).
         float distanciaCerca = distanciaInicial > 0.1f ? distanciaInicial : 16f;
-        float distanciaLejos = distanciaMaxima > distanciaCerca
-            ? distanciaMaxima
-            : 26f;
+        float distanciaLejos = distanciaMaxima > distanciaCerca ? distanciaMaxima : distanciaCerca + 10f;
         float alturaCerca = alturaInicial > 0.1f ? alturaInicial : 2.5f;
-        float alturaLejos = alturaMaxima > alturaCerca ? alturaMaxima : 4f;
-        float velocidadZoom = velocidadParaZoomMaximo > 0.1f
-            ? velocidadParaZoomMaximo
-            : 25f;
+        float alturaLejos = alturaMaxima > alturaCerca ? alturaMaxima : alturaCerca + 1.5f;
+        float alturaZoom = alturaParaZoomMaximo > 1f ? alturaParaZoomMaximo : 40f;
         float tiempoSuavizado = suavizado > 0.01f ? suavizado : 0.18f;
+        float tiempoZoom = suavizadoZoom > 0.01f ? suavizadoZoom : 0.8f;
 
-        float velocidad = rigidBodyObjetivo != null
-            ? Mathf.Max(0f, rigidBodyObjetivo.linearVelocity.x)
-            : 0f;
-        float progresoZoom = Mathf.Clamp01(velocidad / velocidadZoom);
+        float objetivoZoom = Mathf.Clamp01(AlturaSobreElSuelo() / alturaZoom);
+        progresoZoom = Mathf.SmoothDamp(progresoZoom, objetivoZoom, ref velocidadSuavizadoZoom, tiempoZoom);
+
         float distancia = Mathf.Lerp(distanciaCerca, distanciaLejos, progresoZoom);
         float altura = Mathf.Lerp(alturaCerca, alturaLejos, progresoZoom);
 
@@ -93,5 +84,38 @@ public class SeguirAvion : MonoBehaviour
         );
         transform.position = posicion;
         transform.rotation = Quaternion.identity;
+    }
+
+    void BuscarObjetivo()
+    {
+        if (objetivo != null)
+            return;
+
+        GameObject avion = GameObject.Find("AvionRoot");
+        if (avion != null)
+            objetivo = avion.transform;
+    }
+
+    /// <summary>
+    /// Distancia vertical hasta lo que haya debajo del avión (ignorando al propio avión
+    /// y los triggers). Si no hay nada debajo, usa la altura respecto al punto de partida.
+    /// </summary>
+    float AlturaSobreElSuelo()
+    {
+        float masCerca = float.MaxValue;
+        RaycastHit[] impactos = Physics.RaycastAll(
+            objetivo.position, Vector3.down, AlcanceDelSuelo, ~0, QueryTriggerInteraction.Ignore);
+
+        foreach (RaycastHit impacto in impactos)
+        {
+            if (impacto.transform.IsChildOf(objetivo))
+                continue;
+            masCerca = Mathf.Min(masCerca, impacto.distance);
+        }
+
+        if (masCerca < float.MaxValue)
+            return Mathf.Max(0f, masCerca);
+
+        return Mathf.Max(0f, objetivo.position.y - alturaReferencia);
     }
 }

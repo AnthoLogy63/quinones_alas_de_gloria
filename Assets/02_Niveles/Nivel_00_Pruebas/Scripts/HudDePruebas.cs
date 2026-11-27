@@ -11,6 +11,7 @@ public class HudDePruebas : MonoBehaviour
     private int colisiones, colisionesMax;
     private string mensaje = "";
     private GUIStyle estilo;
+    private ControlDeNave control;
 
     void OnEnable()
     {
@@ -70,7 +71,23 @@ public class HudDePruebas : MonoBehaviour
         GUI.Label(new Rect(15, 10, 500, 30), $"Combustible: {combustible:0.0} / {combustibleMax:0}", estilo);
         GUI.Label(new Rect(15, 38, 500, 30), $"Puntaje: {puntaje:0}%", estilo);
         GUI.Label(new Rect(15, 66, 500, 30), $"Colisiones: {colisiones} / {colisionesMax}", estilo);
-        GUI.Label(new Rect(15, 94, 700, 30), "D acelerar | Espacio elevar | A frenar | J disparar", estilo);
+        GUI.Label(new Rect(15, 94, 900, 30), "Izq: D/A potencia, Shift frenos | Der: flechas ↑↓ morro | J o Espacio disparar", estilo);
+
+        if (control == null)
+        {
+            NaveJugador nave = FindFirstObjectByType<NaveJugador>();
+            control = nave != null ? nave.Control : null;
+        }
+        if (control != null)
+        {
+            string estado = control.EnPerdida ? "  ¡PÉRDIDA!" : control.EnTierra ? "  (en tierra)" : "";
+            GUI.Label(new Rect(15, 122, 900, 30),
+                $"Potencia: {control.Potencia * 100f:0}%  Velocidad: {control.VelocidadAire:0.0} m/s  Cabeceo: {control.Cabeceo:0}°{estado}", estilo);
+            Vector3 pos = control.transform.position;
+            string motor = control.MotorActivo ? "motor encendido" : "motor apagado (planeando)";
+            GUI.Label(new Rect(15, 150, 900, 30),
+                $"Distancia: {pos.x:0} m  Altura: {pos.y - 1.4f:0.0} m  {motor}", estilo);
+        }
 
         if (mensaje != "")
             GUI.Label(new Rect(Screen.width / 2f - 250, Screen.height / 2f - 60, 500, 120), mensaje, estilo);

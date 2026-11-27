@@ -58,7 +58,7 @@ public static class CrearMenuPrincipal
         scene.name = "MenuPrincipal";
 
         var canvasObject = new GameObject("Canvas_MenuPrincipal", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-        var cameraObject = new GameObject("Main Camera", typeof(Camera));
+        var cameraObject = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
         var camera = cameraObject.GetComponent<Camera>();
         camera.orthographic = true;
         camera.clearFlags = CameraClearFlags.SolidColor;
@@ -100,6 +100,15 @@ public static class CrearMenuPrincipal
         var levels = AddInteractive(canvasObject.transform, "05_NIVELES", "NIVELES.png", "NIVELES_HOVER.png", 1110f, 510f, 604f, 571f);
         var credits = AddInteractive(canvasObject.transform, "06_CREDITOS_FOTO", "CREDITOS.png", "CREDITOS_HOVER.png", 1500f, 710f, 272f, 279f);
         var exit = AddInteractive(canvasObject.transform, "07_SALIR_PALANCA", "PALANCA_SALIDA.png", "PALANCA_SALIDA_HOVER.png", 120f, 780f, 187f, 255f);
+
+        var audioPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(Root + "Prefabs/AudioMenu.prefab");
+        if (audioPrefab != null)
+        {
+            var audioObject = (GameObject)PrefabUtility.InstantiatePrefab(audioPrefab);
+            var audio = audioObject.GetComponent<AudioDeMenu>();
+            foreach (var target in new[] { options, continueButton, levels, credits, exit })
+                target.GetComponentInChildren<MenuHoverUI>(true).SetAudio(audio);
+        }
 
         var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
         eventSystem.transform.SetParent(null);
@@ -164,7 +173,7 @@ public static class CrearMenuPrincipal
     {
         var group = NewLayer(parent, name).gameObject;
         var hover = CreateImageAt(group.transform, "Hover_trasero", LoadSprite(hoverFile), 0f, 0f, width, height, 1f, false, true);
-        var normal = CreateImageAt(group.transform, "Arte_normal", LoadSprite(normalFile), 0f, 0f, width, height, 1f, false, true);
+        var normal = CreateImageAt(group.transform, "Arte_normal", LoadSprite(normalFile), 0f, 0f, width, height, 1f, true);
         SetPosition(group.GetComponent<RectTransform>(), x, top, width, height);
         var hoverRect = hover.GetComponent<RectTransform>();
         hoverRect.anchorMin = Vector2.zero;
